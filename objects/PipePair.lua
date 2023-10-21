@@ -3,7 +3,7 @@ require 'objects.Pipe'
 
 PipePair = class()
 
-local GAP_HEIGHT = math.random(40, 60)
+local GAP_HEIGHT = math.random(80, 100)
 
 function PipePair:init(y)
     self.x = VIRTUAL_WIDTH + 32
@@ -14,7 +14,7 @@ function PipePair:init(y)
         ['lower'] = Pipe('bottom', self.y + PIPE_HEIGHT + GAP_HEIGHT)
     }
 
-    GAP_HEIGHT = math.random(40, 60)
+    GAP_HEIGHT = math.random(80, 100)
     self.remove = false
 end
 

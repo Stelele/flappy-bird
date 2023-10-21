@@ -29,6 +29,8 @@ local pipePairSpawnTimer = 0
 
 local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
+local scrolling = true
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -65,28 +67,35 @@ function love.keyboard.wasPressed(key)
 end
 
 function love.update(dt)
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
+    if scrolling then
+        backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+        groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
 
-    
-    pipePairSpawnTimer = pipePairSpawnTimer + dt
-    if pipePairSpawnTimer > 2 then
-        local y = math.max(-PIPE_HEIGHT + 10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
-        lastY = y
-        
-        table.insert(pipePairs, PipePair(y))
-        pipePairSpawnTimer = 0
-    end
-
-    for k, pipePair in pairs(pipePairs) do
-        pipePair:update(dt)
-
-        if pipePair.x < -PIPE_WIDTH then
-            table.remove(pipePairs, k)
+        pipePairSpawnTimer = pipePairSpawnTimer + dt
+        if pipePairSpawnTimer > 2 then
+            local y = math.max(-PIPE_HEIGHT + 10, math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+            lastY = y
+            
+            table.insert(pipePairs, PipePair(y))
+            pipePairSpawnTimer = 0
         end
+
+        for k, pipePair in pairs(pipePairs) do
+            pipePair:update(dt)
+
+            for l, pipe in pairs(pipePair.pipes) do
+                if bird:collides(pipe)then
+                    scrolling = false
+                end
+            end
+
+            if pipePair.x < -PIPE_WIDTH then
+                table.remove(pipePairs, k)
+            end
+        end
+        
+        bird:update(dt)
     end
-    
-    bird:update(dt)
 
     love.keyboard.keysPressed = {}
 end
