@@ -16,6 +16,8 @@ function PipePair:init(y)
 
     GAP_HEIGHT = math.random(80, 100)
     self.remove = false
+
+    self.scored = false
 end
 
 function PipePair:update(dt)

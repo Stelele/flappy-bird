@@ -1,6 +1,7 @@
 require 'StateMachine'
 require 'states.TitleScreenState'
 require 'states.PlayState'
+require 'states.ScoreState'
 
 push = require 'libraries.push'
 
@@ -42,7 +43,8 @@ function love.load()
 
     gStateMachine = StateMachine({
         ['title'] = function() return TitleScreenState() end,
-        ['play'] = function () return PlayState() end
+        ['play'] = function () return PlayState() end,
+        ['score'] = function () return ScoreState end,
     })
     gStateMachine:change('title')
 

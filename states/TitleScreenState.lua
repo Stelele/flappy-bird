@@ -1,7 +1,7 @@
 require 'libraries.class'
 require 'states.BaseState'
 
-TitleScreenState = BaseState:extend(p)
+TitleScreenState = BaseState:extend()
 
 function TitleScreenState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
