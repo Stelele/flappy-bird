@@ -2,6 +2,7 @@ require 'StateMachine'
 require 'states.TitleScreenState'
 require 'states.PlayState'
 require 'states.ScoreState'
+require 'states.CountdownState'
 
 push = require 'libraries.push'
 
@@ -43,10 +44,25 @@ function love.load()
 
     gStateMachine = StateMachine({
         ['title'] = function() return TitleScreenState() end,
+        ['countdown'] = function() return CountdownState() end,
         ['play'] = function () return PlayState() end,
         ['score'] = function () return ScoreState end,
     })
     gStateMachine:change('title')
+
+    gSounds = {
+        ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
+        ['explosion'] = love.audio.newSource('sounds/explosion.wav', 'static'),
+        ['hurt'] = love.audio.newSource('sounds/hurt.wav', 'static'),
+        ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
+    
+        -- https://freesound.org/people/xsgianni/sounds/388079/
+        ['music'] = love.audio.newSource('sounds/marios_way.mp3', 'static')
+    }
+
+    gSounds['music']:setLooping(true)
+    gSounds['music']:play()
+
 
     love.keyboard.keysPressed = {}
 end
